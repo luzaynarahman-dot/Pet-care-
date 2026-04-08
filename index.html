@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#2F3A5F">
+  <title>PetCare Shop | Premium Pet Products</title>
+  
+  <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,100..900&display=swap" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1"></script>
+</head>
+<body>
+
+<!-- ============================================ -->
+<!-- TOP NAVIGATION BAR                           -->
+<!-- ============================================ -->
+<nav class="top-bar">
+  <i class="fas fa-bars menu-icon" id="menuIcon"></i>
+  <div class="logo-container">
+    <img src="pet-care-images/logo.png" alt="Logo" class="logo-img" onerror="this.style.display='none'">
+    <span class="title">PetCare Shop</span>
+  </div>
+  <div class="top-actions">
+    <i class="fas fa-heart wishlist-icon" id="wishlistIcon"></i>
+    <i class="fas fa-shopping-cart cart-icon" id="cartIcon"></i>
+    <span class="cart-count" id="cartCount">0</span>
+    <i class="fas fa-bell notification-icon" id="notifIcon"></i>
+  </div>
+</nav>
+
+<!-- ============================================ -->
+<!-- SIDEBAR MENU                                 -->
+<!-- ============================================ -->
+<nav>
+  <div class="slide" id="slideMenu">
+    <i class="fas fa-times close-icon" id="closeMenu"></i>
+    <h1 class="menu-head">Menu</h1>
+    <ul class="menu-item">
+      <li class="item"><a href="#" data-page="dashboard"><i class="fas fa-tv slide-icon"></i><span>Dashboard</span></a></li>
+      <li class="item"><a href="#" id="wishlistMenuLink"><i class="far fa-heart slide-icon"></i><span>Wishlist</span><span class="saved-count" id="savedCount">0</span></a></li>
+      <li class="item"><a href="#" id="myOrdersLink"><i class="fas fa-truck slide-icon"></i><span>My Orders</span></a></li>
+      <li class="item"><a href="#" id="pendingOrdersLink"><i class="fas fa-clock slide-icon"></i><span>Pending Orders</span><span class="pending-count" id="pendingCount">0</span></a></li>
+      <li class="item"><a href="#" id="vetModeLink"><i class="fa-solid fa-user-doctor slide-icon"></i><span>Vet Mode</span></a></li>
+      <li class="item"><a href="#" id="petTrackerLink"><i class="fa-solid fa-chart-line slide-icon"></i><span>Pet Tracker</span></a></li>
+      <li class="item theme-toggle" id="themeToggle"><a href="#"><i class="fa-solid fa-moon themeIcon slide-icon"></i><span class="themeText">DARK MODE</span></a></li>
+      <li class="item"><a href="#" data-page="settings"><i class="fa-solid fa-gear slide-icon"></i><span>Settings</span></a></li>
+    </ul>
+  </div>
+  <div class="overlay" id="overlay"></div>
+</nav>
+
+<!-- ============================================ -->
+<!-- HERO BANNER                                  -->
+<!-- ============================================ -->
+<section class="hero-banner">
+  <div class="hero-slider" id="heroSlider">
+    <div class="hero-slide active"><div class="hero-content"><span class="hero-badge">Limited Time</span><h2>50% Off First Order</h2><p>Use code: PETCARE50</p><button class="hero-btn shop-now-btn">Shop Now</button></div></div>
+    <div class="hero-slide"><div class="hero-content"><span class="hero-badge">Free Shipping</span><h2>Free Delivery on $50+</h2><p>All over the country</p><button class="hero-btn shop-now-btn">Shop Now</button></div></div>
+    <div class="hero-slide"><div class="hero-content"><span class="hero-badge">New Arrivals</span><h2>Summer Collection 2025</h2><p>Fresh styles for your pet</p><button class="hero-btn shop-now-btn">Explore</button></div></div>
+  </div>
+  <button class="hero-prev" id="heroPrev">❮</button>
+  <button class="hero-next" id="heroNext">❯</button>
+  <div class="hero-dots" id="heroDots"></div>
+</section>
+
+<!-- ============================================ -->
+<!-- SORT AND FILTER BAR                          -->
+<!-- ============================================ -->
+<section class="sort-filter-bar">
+  <div class="sort-filter-container">
+    <div class="sort-section">
+      <label>Sort by:</label>
+      <select id="sortSelect">
+        <option value="default">Default</option>
+        <option value="price-low">Price: Low to High</option>
+        <option value="price-high">Price: High to Low</option>
+        <option value="rating">Rating: Highest First</option>
+        <option value="popularity">Popularity</option>
+      </select>
+    </div>
+    <div class="price-filter-section">
+      <label>Price: $<span id="priceMin">0</span> - $<span id="priceMax">500</span></label>
+      <input type="range" id="priceRange" min="0" max="500" value="500" step="10">
+    </div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!-- CATEGORY FILTER                              -->
+<!-- ============================================ -->
+<section class="category-filter">
+  <div class="filter-container">
+    <button class="filter-btn active" data-category="all">All Products</button>
+    <button class="filter-btn" data-category="adoption">Adoption</button>
+    <button class="filter-btn" data-category="food">Pet Food</button>
+    <button class="filter-btn" data-category="accessories">Accessories</button>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!-- LIVE SEARCH                                  -->
+<!-- ============================================ -->
+<section class="search-section">
+  <div class="search-container">
+    <i class="fas fa-search search-icon"></i>
+    <input type="text" id="liveSearch" placeholder="Search products by name or brand..." class="search-input">
+    <button class="search-clear" id="searchClear" style="display: none;">✕</button>
+  </div>
+  <div class="search-results-count" id="searchResultsCount"></div>
+</section>
+
+<!-- ============================================ -->
+<!-- LOADING SKELETON                             -->
+<!-- ============================================ -->
+<div class="skeleton-container" id="skeletonContainer">
+  <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-line"></div><div class="skeleton-line short"></div><div class="skeleton-line"></div></div>
+  <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-line"></div><div class="skeleton-line short"></div><div class="skeleton-line"></div></div>
+  <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-line"></div><div class="skeleton-line short"></div><div class="skeleton-line"></div></div>
+  <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-line"></div><div class="skeleton-line short"></div><div class="skeleton-line"></div></div>
+</div>
+
+<!-- ============================================ -->
+<!-- MAIN CONTENT                                 -->
+<!-- ============================================ -->
+<main class="main-content" id="mainContent" style="display: none;">
+  <!-- Adoption Section -->
+  <section class="container swiper-section" data-section="adoption" id="sectionAdoption">
+    <div class="section-header"><h2 class="section-head">Pet Adoption</h2><div class="section-line"></div></div>
+    <div class="card-wrapper adoption-wrapper">
+      <ul class="card-list swiper-wrapper" id="adoptionList"></ul>
+      <div class="swiper-pagination"></div>
+    </div>
+  </section>
+
+  <!-- Food Section -->
+  <section class="container swiper-section" data-section="food" id="sectionFood">
+    <div class="section-header"><h2 class="section-head">Pet Food</h2><div class="section-line"></div></div>
+    <div class="card-wrapper food-wrapper">
+      <ul class="card-list swiper-wrapper" id="foodList"></ul>
+      <div class="swiper-pagination"></div>
+    </div>
+  </section>
+
+  <!-- Accessories Section -->
+  <section class="container swiper-section" data-section="accessories" id="sectionAccessories">
+    <div class="section-header"><h2 class="section-head">Pet Accessories</h2><div class="section-line"></div></div>
+    <div class="card-wrapper accessories-wrapper">
+      <ul class="card-list swiper-wrapper" id="accessoriesList"></ul>
+      <div class="swiper-pagination"></div>
+    </div>
+  </section>
+
+  <div class="no-results" id="noResults" style="display: none;"><p>No products found matching your search.</p></div>
+</main>
+
+<!-- ============================================ -->
+<!-- MODALS AND SIDEBARS                          -->
+<!-- ============================================ -->
+
+<!-- Quick View Modal -->
+<div class="modal" id="quickViewModal">
+  <div class="modal-content">
+    <i class="fas fa-times close-modal" id="closeQuickViewModal"></i>
+    <div id="modalBody"></div>
+  </div>
+</div>
+
+<!-- Wishlist Modal -->
+<div class="modal" id="wishlistModal">
+  <div class="modal-content modal-large">
+    <i class="fas fa-times close-modal" id="closeWishlistModal"></i>
+    <h2 class="modal-title">My Wishlist</h2>
+    <div id="wishlistItems" class="wishlist-items"></div>
+  </div>
+</div>
+
+<!-- My Orders Modal -->
+<div class="modal" id="myOrdersModal">
+  <div class="modal-content modal-large">
+    <i class="fas fa-times close-modal" id="closeMyOrdersModal"></i>
+    <h2 class="modal-title">My Orders</h2>
+    <div id="myOrdersItems" class="orders-container"></div>
+  </div>
+</div>
+
+<!-- Pending Orders Modal -->
+<div class="modal" id="pendingOrdersModal">
+  <div class="modal-content modal-large">
+    <i class="fas fa-times close-modal" id="closePendingOrdersModal"></i>
+    <h2 class="modal-title">Pending Orders</h2>
+    <div id="pendingOrdersItems" class="orders-container"></div>
+  </div>
+</div>
+
+<!-- Checkout Modal -->
+<div class="modal" id="checkoutModal">
+  <div class="modal-content">
+    <i class="fas fa-times close-modal" id="closeCheckoutModal"></i>
+    <h2 class="modal-title">Checkout</h2>
+    <form id="checkoutForm">
+      <input type="text" id="checkoutName" placeholder="Full Name" required>
+      <input type="email" id="checkoutEmail" placeholder="Email Address" required>
+      <input type="tel" id="checkoutPhone" placeholder="Phone Number" required>
+      <textarea id="checkoutAddress" placeholder="Delivery Address" rows="3" required></textarea>
+      <div class="order-summary" id="orderSummary"></div>
+      <button type="submit" class="checkout-submit-btn">Place Order</button>
+    </form>
+  </div>
+</div>
+
+<!-- Tracking Modal -->
+<div class="modal" id="trackingModal">
+  <div class="modal-content">
+    <i class="fas fa-times close-modal" id="closeTrackingModal"></i>
+    <h2 class="modal-title">Track Your Order</h2>
+    <input type="text" id="trackingId" placeholder="Enter Order ID">
+    <button id="trackOrderBtn" class="track-btn">Track Order</button>
+    <div id="trackingResult" class="tracking-result"></div>
+  </div>
+</div>
+
+<!-- Add Review Modal -->
+<div class="modal" id="reviewModal">
+  <div class="modal-content">
+    <i class="fas fa-times close-modal" id="closeReviewModal"></i>
+    <h2 class="modal-title">Write a Review</h2>
+    <div class="review-stars" id="reviewStars">
+      <i class="far fa-star" data-rating="1"></i>
+      <i class="far fa-star" data-rating="2"></i>
+      <i class="far fa-star" data-rating="3"></i>
+      <i class="far fa-star" data-rating="4"></i>
+      <i class="far fa-star" data-rating="5"></i>
+    </div>
+    <textarea id="reviewText" placeholder="Share your experience..." rows="4"></textarea>
+    <button id="submitReviewBtn" class="submit-review-btn">Submit Review</button>
+  </div>
+</div>
+
+<!-- Shopping Cart Sidebar -->
+<div class="cart-sidebar" id="cartSidebar">
+  <div class="cart-header"><h3>Shopping Cart</h3><i class="fas fa-times close-cart" id="closeCart"></i></div>
+  <div class="cart-items" id="cartItems"><div class="empty-cart"><p>Your cart is empty</p></div></div>
+  <div class="cart-footer"><div class="cart-total"><span>Total:</span><span id="cartTotal">$0.00</span></div><button class="checkout-btn" id="checkoutBtn">Proceed to Checkout</button></div>
+</div>
+
+<!-- Toast Notification -->
+<div class="toast" id="toast"><span class="toast-message" id="toastMessage"></span></div>
+
+<!-- Bottom Navigation -->
+<nav class="bottom-nav">
+  <a href="#" class="nav-item" data-nav="home"><i class="fas fa-home"></i><span>Home</span></a>
+  <a href="#" class="nav-item" data-nav="search"><i class="fas fa-search"></i><span>Search</span></a>
+  <a href="#" class="nav-item active" data-nav="shop"><i class="fas fa-store"></i><span>Shop</span></a>
+  <a href="#" class="nav-item" data-nav="profile"><i class="fas fa-user"></i><span>Profile</span></a>
+</nav>
+
+<!-- Back to Top Button -->
+<button class="back-to-top" id="backToTop" aria-label="Back to top">↑</button>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js"></script>
+<script src="script.js"></script>
+
+</body>
+</html>
